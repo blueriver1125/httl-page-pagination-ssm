@@ -1,0 +1,47 @@
+@charset "utf-8";
+/* CSS Document */
+/*--------------------------------初始化全站UI样式-----------------------------------------*/
+body,html{margin:0px; padding:0px;}
+body{font:12px/24px "Microsoft Yahei";color:#333;background:#fff;_font-family:"宋体";}
+html,body{height:100%;}
+*{ margin:0px; padding:0px;white-space:normal;}
+img{border:none}
+ul,ol,li,dl,dt,dd{list-style:none;}
+i{font-style:normal;}
+.clear{clear:both;}
+.clearfix{_zoom:1}
+.clearfix:after{content:"\0020";display:block;height:0;clear:both}
+*+html .clearfix{overflow:hidden}
+.autoHeight{font:0px/0px sans-serif;clear:both;display:block;height:0px; overflow:hidden;}
+.warp{padding:0;margin:0 auto;width:1200px}
+a{text-decoration:none;color:#666}
+a:hover{text-decoration:underline;color:#007ee7}
+ul,li,dl,dt,dd{ list-style:none; padding:0px; margin:0px;}
+.txt18{ font-size:18px;}
+.txt14{ font-size:14px;}
+.white{color:#fff}
+.white a{color:#fff}
+.white a:hover{color:#fff}
+.orange{color:#f26101}
+.orange a{color:#f26101}
+.orange a:hover{color:#d00000}
+.blue{color:#057c9c}
+.blue a{color:#057c9c}
+.blue a:hover{color:#057c9c}
+.red{color:#d1191a}
+.red a{color:#d1191a}
+.red a:hover{color:#d1191a}
+.gray{color:#666}
+.gray a{color:#666}
+.gray a:hover{color:#009334}
+.border{border:1px #d9d9d9 solid}
+.border_T{border-top:1px #C1E2CD solid}
+.border_B{border-bottom:1px #C1E2CD solid}
+.border_L{border-left:1px #C1E2CD solid}
+.border_R{border-right:1px #C1E2CD solid}
+.dashed{border:1px #C1E2CD dashed}
+.dashed_T{border-top:1px #C1E2CD dashed}
+.dashed_B{border-bottom:1px #C1E2CD dashed}
+.dashed_L{border-left:1px #C1E2CD dashed}
+.dashed_R{border-right:1px #C1E2CD dashed}
+/*------------------------------公用功能块样式-------------------------------------------*/

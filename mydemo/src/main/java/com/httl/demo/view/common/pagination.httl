@@ -1,0 +1,110 @@
+
+
+##用法参照 extendsDemo.httl   
+##分页模板。。
+
+<!--#macro(pagination(Integer pageCurrent, Integer totalPage, Integer rowSum,Integer pageRows,String actionUrl))-->
+<div class="ui-page clearfix"> 
+
+ <!--#if( (totalPage <= 0) || (pageCurrent > totalPage))-->
+        <!--#set(Boolean needPagination = false)-->
+    <!--#else-->
+        <!--#set(Boolean needPagination = true)-->
+        <!--#set(Integer startPage = pageCurrent - 4)-->
+        <!--#if(startPage < 1)-->
+            <!--#set(Integer startPage = 1)-->
+        <!--#end-->
+        <!--#set(Integer endPage = pageCurrent + 4)-->
+        <!--#if(endPage > totalPage)-->
+            <!--#set(Integer endPage = totalPage)-->
+        <!--#end-->
+    <!--#end-->
+
+<b class="ui-page-skip">
+ 共${rowSum}条记录，${totalPage}页，每页
+ <select id="pageRows" class="ui-page-skipTo" onchange="toPage(1,'${actionUrl}')">
+ 	<!-- #if(pageRows==25)-->
+	 	<option value="10" >10</option>
+	 	<option value="25" selected="selected">25</option>
+	 	<option value="50">50</option>
+	 	<option value="100">100</option>
+ 	<!-- #else(pageRows==50)-->
+	 	<option value="10" >10</option>
+	 	<option value="25" >25</option>
+	 	<option value="50" selected="selected">50</option>
+	 	<option value="100">100</option>
+ 	<!-- #else(pageRows==100)-->
+	 	<option value="10" >10</option>
+	 	<option value="25" >25</option>
+	 	<option value="50">50</option>
+	 	<option value="100" selected="selected">100</option>
+ 	<!--#else -->
+	 	<option value="10" selected="selected">10</option>
+	 	<option value="25">25</option>
+	 	<option value="50">50</option>
+	 	<option value="100">100</option>
+ 	<!-- #end -->
+ </select>条 </b>
+<div class="ui-page-wrap">
+
+   
+    <!--#if(needPagination)-->
+    <b class="ui-page-num">
+        <!--#if(pageCurrent <= 8)-->
+            <!--##set(Integer startPage = 1)-->
+        <!--#end-->
+ 
+        <!--#if((totalPage - pageCurrent) < 8)-->
+            <!--#set(Integer endPage = totalPage)-->
+        <!--#end-->
+        <!--#if(pageCurrent == 1)-->
+             <b class="ui-page-prev"> &lt; </b>
+        <!--#else-->
+            <a href="#fakelink" class="ui-page-prev" onclick="toPage(${pageCurrent - 1},'${actionUrl}')">  &lt; </a>
+        <!--#end-->
+ 
+        <!--#if(pageCurrent > 8)-->
+            <a href="#fakelink" onclick="toPage(1,'${actionUrl}')">1</a>
+            <a href="#fakelink" onclick="toPage(2,'${actionUrl}')">2</a>
+            <a href="#fakelink">…</a>
+        <!--#end-->
+ 
+        <!--#for(i : startPage..endPage)-->
+            <!--#if(pageCurrent == i)-->
+                <b class="ui-page-prev" >${i}</b>
+            <!--#else-->
+                <a href="#fakelink" onclick="toPage(${i},'${actionUrl}')">${i}</a>
+            <!--#end-->
+        <!--#end-->
+ 
+        <!--#if((totalPage - pageCurrent) >= 8)-->
+            <a href="#fakelink">…</a>
+            <a href="#fakelink" onclick="toPage(${totalPage - 1},'${actionUrl}')">${totalPage - 1}</a>
+            <a href="#fakelink" onclick="toPage(${totalPage},'${actionUrl}')">${totalPage}</a>
+        <!--#end-->
+ 
+        <!--#if(pageCurrent == totalPage)-->
+            <a href="#fakelink" class="ui-page-prev"> &gt; </a>
+        <!--#else-->
+            <a href="#fakelink" class="ui-page-prev" onclick="toPage(${pageCurrent + 1},'${actionUrl}')"> &gt;</a>
+        <!--#end-->
+     </b>
+    <!--#end-->
+     <!-- /if -->
+    
+</div>
+</div> <!-- /pagination -->
+
+<script type="text/javascript" src="${request.contextPath}/script/jquery/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">
+//分页 请求
+	function toPage(pageCur,actionUrl)
+	{
+		$("#p_pageRows").val($("#pageRows").val());
+		$("#p_pageCurrent").val(pageCur);
+		$('#search_form').attr('action', actionUrl);
+	  	$("#search_form").submit();
+		
+		}
+</script>
+<!--#end-->

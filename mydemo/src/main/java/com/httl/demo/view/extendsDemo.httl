@@ -1,0 +1,198 @@
+
+#*
+	Tips:
+	1.继承  封装了表单 和 查询结果列表 的模板 search-list-base.httl  
+		  重写 该模板中定义的宏query_terms(查询条件)、list_table(列表展示)
+	2.若页面上不需要查询 列表    可直接继承 layout.httl   
+		  重写 该模板中定义的宏 inner_content 编写需要显示的内容
+    3.所有继承了模板的页面  ， 需重写宏title(页面标题) 和 content_menus（页面内容小标题）
+*#
+
+${extends("common/search-list-base.httl")}
+
+
+## 重写宏 title  和   content_menus  因为每个页面的标题不同
+
+<!--#macro(title)-->修改title:带量采购<!-- #end -->
+<!--#macro(content_menus) --> 修改页面内容小标题：<a href="#">采购</a>&gt;<a href="#">带量采购</a>&gt;&nbsp;xxxxx    <!--#end  -->
+
+
+##重写 父模板的宏query_terms(查询条件)   --开始------------
+<!--#macro(query_terms)  -->
+
+		##设置需要的变量、对象等
+		<!-- #set(PurchaseDelegateItem purchaseDelegateItem) -->
+		
+		<tr>
+            <td align="right">产品名称：</td>
+            <td><input type="text" name="tradeName" value="${purchaseDelegateItem.tradeName}"/></td>
+            <td align="right">化学通用名：</td>
+            <td><input type="text" name="genericName" value="${purchaseDelegateItem.genericName}"/></td>
+            <td align="right">剂型：</td>
+            <td><input type="text" name="dosageForm" value="${purchaseDelegateItem.dosageForm}"/> </td>
+            <td rowspan="2"><button type="submit" class="search_btn" href="#">查询</button></td>
+          </tr>
+<!-- #end -->
+##重写 父模板的宏query_terms(查询条件)   --结束------------
+
+
+
+
+##重写父 模板的 宏list_table(查询列表)   --开始----------------
+<!--#macro(list_table)  -->
+ 
+	##设置需要的变量、对象等
+	<!--#set(Page<BuyerReports> page)-->
+	<!-- #set(PurchaseDelegate purchaseDelegate=session.purchaseDelegate) -->
+	<!-- #set(LoginAccount loginAccount=session.USERINFO) -->
+	
+    ##列表 的 表单  （如需要）
+    <form action="save" method="post" id="save_form">
+      <input type="hidden" name="memberId" value="${loginAccount.memberId}">
+      <input type="hidden" name="pdId" value="${purchaseDelegate.id}">
+      
+      ##列表div   --开始------
+      <div class="list_tab">
+ 		<TABLE width="100%" border=0 cellSpacing=0 cellPadding=0>
+          <THEAD>
+            <TR>
+              <TH>序号</TH>
+              <TH style="width: 15%;">产品名称</TH>
+              <TH>化学通用名</TH>
+              <TH>剂型</TH>
+              <TH>规格</TH>
+              <TH>低价药属性</TH>
+              <TH>基药属性</TH>
+              <TH>报量单位</TH>
+              <TH>一年需求报量</TH>
+              <TH>现行采购价</TH>
+            </TR>
+          </THEAD>
+          <TBODY>
+          		##for循环显示内容    --开始---
+	           	<!--#for(BuyerReports br  : page.rows) -->
+		           	<!--#if((for.index+1)%2 == 0) -->
+		            <TR  class="even">
+		            <!-- #else -->
+		            <TR  class="odd">
+		            <!-- #end -->
+		             <td>${for.index+1+page.pageRows*(page.pageCurrent-1)}</td><td >${br.pditem.tradeName}</td><td>${br.pditem.genericName}</td><td>${br.pditem.dosageForm}</td>
+		             <td>${br.pditem.specification}</td><td>${br.pditem.lowPriceType}</td><td>${br.pditem.baseType}</td><td>${br.pditem.reportsUnit}</td>
+		             
+		             <td style="width: 15%;" class="amountTd">
+		             	 <input name="amt_${br.pdiId}" class="required digits amountInp"  maxlength="9" type="text" value="${br.amount}" style="border: 1px solid #CCC;padding: 6px 5px;width:70px;"/>
+		             </td>
+		              <td style="width: 15%;" class="priceTd">
+		             	 <input name="pcp_${br.pdiId}" class="required price purchasePriceInp"  maxlength="20" type="text" value="${br.purchasePrice}" style="border: 1px solid #CCC;padding: 6px 5px;width:70px;"/>
+		             </td>
+		             
+		            </TR>
+		       <!--#else-->
+		    		<tr > <td align="center" colspan="10">没有数据！</td>  </tr>
+		   	   <!--#end -->
+	   	     	##for循环显示内容    --结束---
+	   		 
+	   		 </TBODY>
+  			</table>
+      </div>
+       ##列表div   --结束------
+       
+       ##分页    如需该分页pagination宏  则必须继承search-list-base.httl 才有效
+		$!{pagination(page.pageCurrent,page.total,page.rowSum,page.pageRows,"query")}
+      
+      
+      ##按钮   (如需要)
+      <div class="">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td align="center"><input class="sub_btn" type="submit" value="保存"></td>
+          </tr>
+        </table>
+      </div>
+      
+      </form>
+   <!-- #end -->   
+	##重写父 模板的 宏list_table(查询列表)   --结束----------------
+	
+	
+#*
+	重写父模板 layout.httl的宏js_script(各页面自己的js)  
+	 search-list-base.httl 继承了 layout.httl
+*#
+<!-- #macro(js_script) -->
+<script type="text/javascript">
+var changeFlag=false; //是否已处理 
+var serverTime=new Date(); //全局 服务器时间
+var isServerTime=false;
+$(document).ready(function(){
+	/**
+	 * 数据校验
+	 */
+	$("#save_form").validate({
+		submitHandler: function(form) {
+			form.submit();
+		},
+		errorElement: "span",
+		errorClass: "erro_tips"
+	});
+
+	getServerTime(); //加载时获取服务器时间
+	showTime();
+});
+
+
+//获取服务器时间
+function getServerTime()
+{
+	$.ajax({ url: "${request.contextPath}/do/server-time/get", success: function(dateTime){
+		serverTime.setTime(dateTime);
+		isServerTime=true;
+      }});
+
+}
+
+//显示服务器时间 
+function  showTime()
+{
+	
+	var edtime=$("#edTime").val();
+	var nowtime = serverTime.getTime();         //今天的日期(毫秒值)
+		if(isServerTime &&　(edtime-nowtime)<0 && !changeFlag) //已截止
+		{
+			//处理 需求量 输入框
+			$(".amountTd").each(function(){
+			   $(this).html($(this).find(".amountInp").val());
+			  });
+			//处理 现行采购价输入框 
+			  $(".priceTd").each(function(){
+			   $(this).html($(this).find(".purchasePriceInp").val());
+			  });
+			  
+			  //处理按钮
+			$(".sub_btn").hide();
+			changeFlag=true;
+		}
+		//获取服务器日期
+		var year=serverTime.getFullYear();
+		var month=serverTime.getMonth()+1;
+		var date=serverTime.getDate();
+		//获取服务器时间
+		var hour=serverTime.getHours();
+		var minu=serverTime.getMinutes();
+		var seco=serverTime.getSeconds();
+		//显示当前时间
+		//var mytime=nowDate.toLocaleTimeString();     //获取当前时间
+		//var myDate=serverTime.toLocaleString();        //获取日期与时间  
+		var myDate=year+"-"+month+"-"+date+" "+hour+":"+minu+":"+seco;
+		if(minu%30==0 && seco==1)
+			getServerTime();
+		
+		//$("#showTimeSpan").html(serverTime.toLocaleString());
+		$("#showTimeSpan").html(myDate);
+		serverTime.setSeconds(seco+1);
+			//每秒 
+		 setTimeout("showTime()",1000);
+	
+}
+</script>
+<!-- #end -->

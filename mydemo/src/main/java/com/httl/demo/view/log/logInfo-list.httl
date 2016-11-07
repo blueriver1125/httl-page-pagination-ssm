@@ -1,0 +1,93 @@
+${extends("../common/search-list-base.httl")}
+
+<!--#macro(title)-->日志列表<!-- #end -->
+<!--#macro(content_menus) --> <a href="#">日志管理</a>&gt;日志列表   <!--#end  -->
+
+
+<!--#macro(query_terms)  -->
+	
+	<!-- #set(LogInfo logInfo) -->
+
+  		 <tr>
+            <td align="right">客户端IP：</td>
+            <td><input type="text" name="clientIP" value="${logInfo.clientIP}"/></td>
+            <td></td>
+            <td align="right">请求路径：</td>
+            <td><input type="text" name="requestURL" value="${logInfo.requestURL}"/> </td>
+            <td align="right">响应结果：</td>
+            <td>
+            <select name="responseCode"  >
+            <!--#if(logInfo.responseCode=="001")  -->
+            	<option value="">全部</option>
+             	<option value="001" selected="selected">成功</option>
+             	 <!--<option value="002" >票据无效</option>
+	             --><option value="003" >失败</option>
+	             <option value="004">异常</option><!--
+	       #else(logInfo.responseCode=="002")  
+            	 <option value="">全部</option>
+	             <option value="001" >成功</option>
+	             <option value="002" selected="selected">票据无效</option>
+	             <option value="003" >失败</option>
+	             <option value="004">异常</option>
+            --><!--#else(logInfo.responseCode=="003")  -->
+            	 <option value="">全部</option>
+	             <option value="001" >成功</option>
+	             <!--<option value="002" >票据无效</option>
+	             --><option value="003" selected="selected">失败</option>
+	             <option value="004">异常</option>
+	         <!-- #else(logInfo.responseCode=="004") -->
+	             <option value="">全部</option>
+	         	 <option value="001" >成功</option><!--
+	         	 <option value="002" >票据无效</option>
+	             --><option value="003">失败</option>
+	             <option value="004" selected="selected">异常</option>
+	         <!-- #else -->  
+	             <option value="" selected="selected">全部</option>  
+	        	 <option value="001" >成功</option><!--
+	        	 <option value="002" >票据无效</option>
+	             --><option value="003">失败</option>
+	             <option value="004" >异常</option>
+	         <!--#end  -->
+            </select>
+            </td>
+            <td  align="center"><button type="submit" class="search_btn" href="#">查询</button></td>
+          </tr>
+<!--#end  -->
+
+<!--#macro(list_table)  -->
+	<!--#set(Page<LogInfo> page)-->
+      <div class="list_tab">
+ 	  <TABLE width="100%" border=0 cellSpacing=0 cellPadding=0>
+          <THEAD>
+            <TR>
+              <TH>序号</TH>
+              <TH style="width:10%;">客户端IP</TH>
+              <TH style="width:10%;">登录名</TH>
+              <TH style="width: 22%;">请求路径</TH>
+              <TH style="width: 11%;">请求时间</TH>
+              <TH style="width: 8%;">处理时间(毫秒)</TH>
+              <TH style="width: 6%;">响应结果</TH>
+              <th style="width: 5%;">操作</th>
+            </TR>
+          </THEAD>
+          <TBODY>
+          
+          
+	           	<!--#for(LogInfo log  : page.rows) -->
+		           	<!--#if((for.index+1)%2 == 0) -->
+		            <TR  class="even">
+		            <!-- #else -->
+		            <TR  class="odd">
+		            <!-- #end -->
+		             <td>${for.index+1+page.pageRows*(page.pageCurrent-1)}</td><td >${log.clientIP}</td>
+		             <td>${log.requestURL}</td><td>${log.requestTime}</td><td>${log.operateTime}</td>
+		             <td><!--#if(log.responseCode == '001') -->成功<!--#else(log.responseCode == "002")-->票据无效<!--#else(log.responseCode == "004")-->异常<!--#else(log.responseCode=="003")-->失败<!-- #end --></td>
+		             <td><a href="detail?logInfoID=${log.id}">详情</a></td>
+		       <!--#else-->
+		    		<tr > <td align="center" colspan="10" class="even"><b class="red">没有数据！</b></td>  </tr>
+		   	   <!--#end -->
+	   		 </TBODY>
+  		</table>
+      </div>
+		$!{pagination(page.pageCurrent,page.total,page.rowSum,page.pageRows,"query")}
+  <!--#end  -->

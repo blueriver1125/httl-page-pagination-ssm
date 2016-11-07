@@ -1,0 +1,53 @@
+${extends("layout.httl")}
+
+#*
+	tips:
+		用法参照 extendsDemo.httl 
+		继承模板 layout.httl    并重写父模板(layout.httl) 的宏  inner_content   
+	           可继承本模板  重写 查询条件  和 结果列表显示 等
+*#
+<!--#macro(inner_content) -->
+       <div class="zb_tab">
+      	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+      	<!--#macro($detail_table) -->
+		  <tr>
+		    <td width="18%" align="right"><label class="blue">模板内容：</label></td>
+		    <td width="82%">模板内容</td>
+		  </tr>
+		  <tr>
+		    <td align="right"><label class="blue">模板内容：</label></td>
+		    <td>模板内容</td>
+		  </tr>
+		  <tr>
+		    <td align="right"><label class="blue">模板内容：</label></td>
+		    <td>模板内容</td>
+		  </tr>
+		  <tr>
+		    <td align="right"><label class="blue">模板内容：</label></td>
+		    <td>1985-09-09</td>
+		  </tr>
+		  <tr>
+		    <td align="right"><label class="blue">模板内容：</label></td>
+		    <td>模板内容</td>
+		  </tr>
+		  <tr>
+		    <td align="right"><label class="blue">模板内容：</label></td>
+		    <td>模板内容</td>
+  		</tr>
+		  <!--#end -->
+		  		
+		   	 ##按钮
+	     <!--#macro($detail_button) -->
+		  <tr>
+            <td>&nbsp;</td>
+            <td><input class="sub_btn" type="submit" value="新增角色">
+              <input class="sub_btn" type="submit" value="保存并设置权限"></td>
+          </tr>
+          <!--#end -->
+		</table>
+		
+		
+      </div>
+	    
+ <!--#end  -->
+ ##页面主要内容   结束

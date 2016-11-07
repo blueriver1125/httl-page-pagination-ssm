@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+
+#*
+	Tips:
+		用法参照 extendsDemo.httl 
+		        search-list-base.httl
+*#
+
+<head>
+<meta charset="utf-8">
+##标题
+<title> <!--#macro($title)--><!-- #end --> </title>
+
+
+## 网站通用CSS文件
+<!--#macro($css_file)-->
+	<link rel="stylesheet" href="${request.contextPath}/css/css.css"/>
+	<link rel="stylesheet" href="${request.contextPath}/css/public.css" />
+<!--#end -->
+</head>
+
+##set  loginAccount=session.USERINFO) 
+<body>
+##顶部    不变的内容
+<div class="header">
+  <div class="top_bar clearfix">
+    <ul>
+      <li class="li_tell">咨询电话：023-612345656 </li>
+      <li class="li_mail">service_kefu@qq.com</li>
+      <li class="li_login"><a class="c_blue" href="#">欢迎您，admin</a> <a class="c_gray" href="${request.contextPath}/do/account/login-out">退出</a><a href="#" class="kf_link">在线客服</a> </li>
+    </ul>
+  </div>
+
+    <div class="top_imgs"><a href="#"></a></div>
+    ##网站 总体菜单
+  <!--三级菜单-->
+  <div class="top_nav">
+    <UL class="nav">
+      <LI class="top"><A class="top_link" href="${request.contextPath}/do/manager/index"><SPAN><img src="${request.contextPath}/images/sys_ico4.png"  alt=""/>首页</SPAN></A></LI>
+      <LI class="top"><A class="top_link" 
+  href="${request.contextPath}/do/partymember/query"><SPAN><img src="${request.contextPath}/images/sys_ico5.png"  alt=""/>会员管理</SPAN></A></LI>
+      <LI class="top"><A class="top_link" href="${request.contextPath}/do/loginfo/query"><SPAN><img src="${request.contextPath}/images/sys_ico6.png"  alt=""/>日志管理</SPAN></A>
+      <!--
+        <UL class=sub>
+          <LI><A class="fly" href="#">菜单一</A></LI>
+          <LI><A class="fly" href="#">菜单二</A>
+            <UL>
+              <LI><A href="#">菜单xx</A></LI>
+              <LI><A href="#">菜单xxxx</A></LI>
+              <LI><A href="#">菜单xxxx</A></LI>
+              <LI><A href="#">菜单xxx</A></LI>
+              <LI><A href="#">菜单xxxx</A></LI>
+              <LI><A href="#">菜单xxxxxx</A></LI>
+            </UL>
+          </LI>
+          <LI><A class="fly" href="#">菜单 hahah</A></LI>
+          <LI><A class="fly" href="#">菜单xxxx</A></LI>
+          <LI><A class="fly" href="#">菜单xxxxx</A></LI>
+        </UL>
+      --></LI>
+      <LI class="top"><A class="top_link" href="#"><SPAN><img src="${request.contextPath}/images/sys_ico7.png"  alt=""/>菜单1</SPAN></A></LI>
+      <LI class="top"><A class="top_link" href="#"><SPAN><img src="${request.contextPath}/images/sys_ico8.png"  alt=""/>苹果</SPAN></A></LI>
+      <LI class="top"><A class="top_link" href="#"><SPAN><img src="${request.contextPath}/images/sys_ico9.png"  alt=""/>桃子</SPAN></A></LI>
+      <LI class="top"><A class="top_link" href="#"><SPAN><img src="${request.contextPath}/images/sys_ico10.png"  alt=""/>石榴</SPAN></A></LI>
+    </UL>
+  </div>
+  <!--三级菜单-->
+</div>
+
+<div class="inner_container">
+  <div class="inner_contain">
+    <div class="form_title clearfix"> <span class="ft18 fl"><img src="${request.contextPath}/images/sys_ico15.gif"  alt=""/>admin</span><span class="ft14 fr"><img src="${request.contextPath}/images/sys_ico16.gif"  alt=""/><span id="showTimeSpan"></span></span></div>
+    <div class="inner_con">
+      <div class="inner_info"> 
+      ##页面内容菜单
+      <!--#macro($content_menus) --><a href="#">模板内容xxxx</a>&gt;<a href="#">模板内容xxxx</a>&gt;&nbsp;模板内容xxxxx <!-- #end -->
+      </div>
+      
+      ## 页面主要内容  开始
+      <!-- #macro($inner_content) -->
+      
+            #*继承本模板后 重写宏 inner_content*#
+	        
+      <!--#end  -->
+      ## 页面主要内容   结束
+  </div>
+</div>
+</div>
+<!--inner_container end-->
+
+##底部
+<div class="footer">
+  <div class="main_contain"><a href="#">关于我们</a>|<a href="#">联系我们</a>|<a href="#">法律声明</a>|<a href="#">人才招聘</a>
+    <p>Copyright 2011-2021 呵呵哒(https://github.com/blueriver1125/httl-page-pagination-template.git) All Rights Reserved | 渝ICP备102344021-2<br>
+      公司地址：地球。</p>
+  </div>
+</div>
+
+##通用 js文件 和script
+<!-- #macro($js_file) -->
+<script type="text/javascript" src="${request.contextPath}/script/jquery/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="${request.contextPath}/script/jquery/validate/jquery.validate.js"></script>
+<script type="text/javascript" src="${request.contextPath}/script/jquery/validate/i18n/messages_zh_CN.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	/**
+	 * 数据校验
+	 */
+	/**$("#search_form").validate({
+		submitHandler: function(form) {
+			form.submit();
+		},
+		errorElement: "span",
+		errorClass: "erro_tips"
+	});**/
+
+	showTime();
+});
+
+
+//显示时间 
+function  showTime()
+{
+		$("#showTimeSpan").html(new Date().toLocaleString());
+		 //每秒 
+		 setTimeout("showTime()",1000);
+}
+</script>
+<!-- #end -->
+
+##各自页面 的js   需继承本模板后重写宏 js_script
+<!-- #macro($js_script) -->
+<!-- #end -->
+</body>
+</html>

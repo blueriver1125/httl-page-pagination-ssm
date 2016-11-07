@@ -1,0 +1,47 @@
+${extends("../common/list-detail-base.httl")}
+
+<!--#macro(title)-->日志详情<!-- #end -->
+<!--#macro(content_menus) --><a href="#">日志管理</a>&gt;<a href="#">日志列表</a>&gt;&nbsp;日志详情    <!--#end  -->
+
+##日志详情
+<!--#macro(detail_table) -->
+	<!--#set(LogInfo logInfo)  -->
+		  <tr>
+		    <td width="18%" align="right"><label class="blue">会员ID：</label></td>
+		    <td width="32%">${logInfo.member.partyMemberId}</td>
+		    <td width="18%" align="right"><label class="blue">会员名称：</label></td>
+		    <td width="32%">${logInfo.member.userName}</td>
+		  </tr>
+		  <tr>
+		    <td align="right"><label class="blue">登录账号：</label></td>
+		    <td>${logInfo.member.loginName}</td>
+		    <td align="right"><label class="blue">客户端IP：</label></td>
+		    <td>${logInfo.clientIP}</td>
+		  </tr>
+		  <tr>
+		    <td align="right"><label class="blue">请求时间：</label></td>
+		    <td>${logInfo.requestTime}</td>
+		  	<td align="right"><label class="blue">请求路径：</label></td>
+		    <td>${logInfo.requestURL}</td>
+		  </tr>
+		  <tr>
+		    <td align="right"><label class="blue">响应时间：</label></td>
+		    <td>${logInfo.responseTime}</td>
+		    <td align="right"><label class="blue">详情信息描述：</label></td>
+		    <td>${logInfo.responseInfo}</td>
+		  </tr>
+		  <tr>
+		    <td align="right"><label class="blue">处理时间(毫秒)：</label></td>
+		    <td>${logInfo.operateTime}</td>
+		    <td align="right"><label class="blue">响应结果：</label></td>
+		    <td><!--#if(logInfo.responseCode == '001') -->成功<!--#else(logInfo.responseCode == "002")-->票据无效<!--#else(logInfo.responseCode == "004")-->异常<!--#else(logInfo.responseCode=="003")-->失败<!-- #end --></td>
+		  </tr>
+<!--#end -->
+
+##按钮
+<!-- #macro(detail_button) -->
+		  <tr>
+            <td colspan="4" align="center"> <input style="padding: 0px 0px;" class="sub_btn" type="button" value="返回" onclick="javascript:history.go(-1);">
+          </tr>
+
+<!-- #end -->
